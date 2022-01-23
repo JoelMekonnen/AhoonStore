@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">ahoonstore</string>
+    <string name="introText">Ahoon Store Login </string>
+    <string name="userHint">username</string>
+    <string name="emailHint">Email</string>
+    <string name="password">password</string>
+    <string name="signUp">Signup</string>
+    <string name="login">Login</string>
+    <string name="home_title">Ahoon Store Home</string>
+    <string name="nav_open">Open</string>
+    <string name="btn_order">Order</string>
+    <string name="btn_latter">Save</string>
+    <string name="nav_close">Close</string>
+    <string name="Quantity">quantity</string>
+    <string name="city">city</string>
+    <string name="sub_city">sub-city</string>
+    <string name="house_no">house-no</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
