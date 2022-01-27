@@ -3,9 +3,11 @@
 namespace App\Http\Controllers\API;
 
 use App\products;
+use App\userProfile;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\orders;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 
 class apiOrderController extends BaseController
@@ -40,8 +42,39 @@ class apiOrderController extends BaseController
       public function userGetPendingHistory()
       {
            $loggedUser = Auth::user();
-           $orders = orders::where('user_id', '=', $loggedUser->id);
-           return $this->sendResponse($orders);
-
+           $profile_id = userProfile::where('user_id', '=', $loggedUser->id)->get();
+           $orders = orders::where('user_id', '=', $profile_id[0]->id)->where('status', '=', 'pending')->get();
+          foreach($orders as $order)
+          {
+              $product_res = products::find($order->prod_id);
+              $order->product = $product_res;
+          }
+           return $this->sendResponse($orders, "success");
       }
+      public function userGetApprovedHistory()
+      {
+          $loggedUser = Auth::user();
+          $profile_id = userProfile::where('user_id', '=', $loggedUser->id)->get();
+          $orders = orders::where('user_id', '=', $profile_id[0]->id)->where('status', '=', 'approved')->get();
+          foreach($orders as $order)
+          {
+              $product_res = products::find($order->prod_id);
+              $order->product = $product_res;
+          }
+          return $this->sendResponse($orders, "success");
+      }
+      public function userGetFailedHistory()
+      {
+          $loggedUser = Auth::user();
+          $profile_id = userProfile::where('user_id', '=', $loggedUser->id)->get();
+          $result = [];
+          $orders = orders::where('user_id', '=', $profile_id[0]->id)->where('status', '=', 'failed')->get();
+          foreach($orders as $order)
+          {
+              $product_res = products::find($order->prod_id);
+              $order->product = $product_res;
+          }
+          return $this->sendResponse($orders, "success");
+      }
+
 }

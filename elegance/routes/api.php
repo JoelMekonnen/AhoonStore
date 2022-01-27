@@ -16,7 +16,7 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
-Route::post('register', 'API\profilesController@register');
+Route::post('user/create', 'API\profilesController@register');
 Route::middleware('auth:api')->group(function(){
     Route::get('products/', 'API\productController@show');
     Route::get('logout/', 'API\profilesController@logout');
@@ -24,4 +24,6 @@ Route::middleware('auth:api')->group(function(){
     Route::get('products/{id}', 'API\productController@showDetail');
     Route::post('order/create/', 'API\apiOrderController@createOrder');
     Route::get('user/order/pending', 'API\apiOrderController@userGetPendingHistory');
+    Route::get('user/order/approved', 'API\apiOrderController@userGetApprovedHistory');
+    Route::get('user/order/failed', 'API\apiOrderController@userGetFailedHistory');
 });

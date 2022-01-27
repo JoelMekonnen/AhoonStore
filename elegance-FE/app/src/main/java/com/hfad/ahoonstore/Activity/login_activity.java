@@ -34,6 +34,7 @@ public class login_activity extends AppCompatActivity {
         queue = Volley.newRequestQueue(login_activity.this);
         myPref = getSharedPreferences("mainPref", Context.MODE_PRIVATE);
         Button login = (Button)findViewById(R.id.LoginButton);
+        Button signup = (Button)findViewById(R.id.submitButton);
         EditText username = (EditText)findViewById(R.id.username);
         EditText password = (EditText)findViewById(R.id.password);
         login.setOnClickListener(new View.OnClickListener(){
@@ -43,11 +44,19 @@ public class login_activity extends AppCompatActivity {
                 userLogin(v, username.getText().toString(), password.getText().toString());
             }
         });
+        signup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent signUpIntent = new Intent(login_activity.this, signup_activity.class);
+                startActivity(signUpIntent);
+                finish();
+            }
+        });
     }
     public void userLogin(View view, String username, String password)
     {
-        String client_id  = "2";
-        String client_secret = "sGrbnuiLaPQQspHd1kUbyJMAxTvVlgxtAQJpCbzG";
+        String client_id  = "4";
+        String client_secret = "SUBBY1Cht8ReE6RLtMsAZiRlluFPDfppliFNw4AD";
         String grant_type = "password";
         HashMap<String, String> myObject = new HashMap<String, String>();
         myObject.put("username", username);

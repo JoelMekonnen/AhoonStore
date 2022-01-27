@@ -9,6 +9,7 @@ use Faker\Provider\Base;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\API\BaseController as BaseController;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Carbon\Carbon;
 
@@ -17,21 +18,28 @@ class profilesController extends BaseController
     // In this function we register the users
     public function register(Request $request)
     {
-        $validator = Validator::make($request->all(), [
-             'name'=>'required',
-             'username'=>'required',
-             'email'=>'required|email',
-             'password'=> 'required',
-             'c_password'=>'required|same:password',
+        $user_create = User::create([
+            'name'=>$request["name"],
+            'username'=>$request["username"],
+            'email'=>$request["email"],
+            'isAdmin'=>false,
+            'password'=>bcrypt($request["password"])
         ]);
-        if($validator->fails()) {
-            return $this->sendError('Validation Error', $validator->errors());
-        }
-        $data = $request->all();
-        $data['password'] = bcrypt($data['password']);
-        $user = User::create($data);
-        $success['token'] = $user->createToken('UserApp')->accessToken;
-        $success['user'] = $user;
+        $profileData = $request->file('profilePics');
+        $fileName = $profileData->getClientOriginalName();
+        Storage::disk('local')->putFileAs(
+            'public/profilePics',
+            $profileData,
+            $fileName
+        );
+        $profile_create = userProfile::create([
+              'user_id'=>$user_create["id"],
+              'Location'=>$request["Location"],
+              'phone_number'=>$request["phone_number"],
+
+              'profile_pic'=>$fileName
+        ]);
+        $success = ["user"=>$user_create, "profile"=>$profile_create];
         return $this->sendResponse($success, 'user registered successfully');
     }
     public function logout(Request $request)
